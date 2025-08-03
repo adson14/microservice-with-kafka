@@ -1,0 +1,56 @@
+{
+  "name": "NestJS Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "api-gateway",
+  "workspaceFolder": "/usr/src/app",
+  "shutdownAction": "stopCompose",
+  
+  // Configurações do VS Code
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.vscode-json",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-eslint",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        "ms-vscode.vscode-jest",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "git.enabled": true,
+        "git.path": "/usr/bin/git",
+        "git.autoRepositoryDetection": "openEditors",
+        "git.enableSmartCommit": true,
+        "git.confirmSync": false,
+        "git.autofetch": true,
+        "scm.defaultViewMode": "tree"
+      }
+    }
+  },
+
+  // Portas
+  "forwardPorts": [3000],
+  
+  // Features do Git (instala automaticamente)
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Configurar Git diretamente (SUBSTITUA pelos seus dados)
+  "postCreateCommand": "git config --global user.name 'Adson' && git config --global user.email 'seu.email@gmail.com' && git config --global --add safe.directory /usr/src/app && git config --global --add safe.directory '*'",
+
+  // Executar como root para evitar problemas de permissão
+  "remoteUser": "root"
+}
