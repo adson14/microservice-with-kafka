@@ -13,7 +13,42 @@ services:
     environment:
       - NODE_ENV=development
     networks:
-      - kafka-net
+      - microservices_network-adson
+
+  order-service:
+    build:
+      context: ./services/order-service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./services/order-service:/app  
+      - /app/node_modules      
+    ports:
+      - "${ORDER_SERVICE_PORT:-3001}:3001"
+    env_file:
+      - .env
+    environment:
+      - PORT=${ORDER_SERVICE_PORT:-3001}  
+    networks:
+      - microservices_network-adson
+    depends_on:
+      -  order-service-db
+
+  order-service-db:
+    image: mongo:5.0
+    container_name: order-service-db
+    volumes:
+      - './services/order-service/./mongod.conf:/etc/mongod.conf' 
+      - 'order-db-data:/data/db'
+    environment:
+      - 'MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-dev}'
+      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234@}'
+      - 'MONGO_INITDB_DATABASE=${MONGO_DATABASE:-order-service}'
+      - 'PUID=1000'
+      - 'PGID=1000'
+    ports:
+      - "27017:27017"         
+    networks:
+      - microservices_network-adson
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -37,11 +72,12 @@ services:
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
     networks:
-      - kafka-net
+      - microservices_network-adson
 
 volumes:
   dist:
+  order-db-data:
 
 networks:
-  kafka-net:
-    driver: bridge
+  microservices_network-adson:
+    external: true

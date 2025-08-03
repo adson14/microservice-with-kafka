@@ -23,4 +23,4 @@ USER node
 
 EXPOSE 3000
 
-CMD ["./entrypoint.sh"]
+CMD ["./scripts/entrypoint.sh"]
