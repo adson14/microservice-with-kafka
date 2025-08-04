@@ -33,6 +33,24 @@ services:
     depends_on:
       -  order-service-db
 
+  payment-service:
+    build:
+      context: ./services/payment-service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./services/payment-service:/app  
+      - /app/node_modules      
+    ports:
+      - "${PAYMENT_SERVICE_PORT:-3002}:3002"
+    env_file:
+      - .env
+    environment:
+      - PORT=${ORDER_SERVICE_PORT:-3002}  
+    networks:
+      - microservices_network-adson
+    depends_on:
+      -  payment-service-db    
+
   order-service-db:
     image: mongo:5.0
     container_name: order-service-db
@@ -49,6 +67,23 @@ services:
       - "27017:27017"         
     networks:
       - microservices_network-adson
+      
+  payment-service-db:
+    image: mongo:5.0
+    container_name: payment-service-db
+    volumes:
+      - './services/payment-service/./mongod.conf:/etc/mongod.conf' 
+      - 'payment-db-data:/data/db'
+    environment:
+      - 'MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-dev}'
+      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234@}'
+      - 'MONGO_INITDB_DATABASE=${MONGO_DATABASE:-payment-service}'
+      - 'PUID=1000'
+      - 'PGID=1000'
+    ports:
+      - "27018:27017"         
+    networks:
+      - microservices_network-adson    
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -77,6 +112,7 @@ services:
 volumes:
   dist:
   order-db-data:
+  payment-db-data:
 
 networks:
   microservices_network-adson:

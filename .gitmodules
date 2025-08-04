@@ -1,3 +1,6 @@
 [submodule "services/order-service"]
 	path = services/order-service
 	url = https://github.com/adson14/order-service.git
+[submodule "services/payment-service"]
+	path = services/payment-service
+	url = https://github.com/adson14/payment-service.git
