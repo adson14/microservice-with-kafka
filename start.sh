@@ -15,6 +15,7 @@ HOST=${HOST:-localhost}
 API_PORT=${API_PORT:-3000}
 ORDER_SERVICE_PORT=${ORDER_SERVICE_PORT:-3001}
 PAYMENT_SERVICE_PORT=${PAYMENT_SERVICE_PORT:-3002}
+NOTIFICATION_SERVICE_PORT=${NOTIFICATION_SERVICE_PORT:-3003}
 
 echo "🚀 Iniciando microsserviços..."
 
@@ -38,5 +39,6 @@ echo ""
 echo "📋 Serviços:"
 echo "  • Order Service: http://${HOST}:${ORDER_SERVICE_PORT}"
 echo "  • Payment Service: http://${HOST}:${PAYMENT_SERVICE_PORT}"
+echo "  • Notification Service: http://${HOST}:${NOTIFICATION_SERVICE_PORT}"
 echo ""
 echo "💡 Ver logs: docker-compose logs -f"
