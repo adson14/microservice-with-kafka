@@ -12,6 +12,8 @@ services:
       - /usr/src/app/node_modules
     environment:
       - NODE_ENV=development
+    depends_on:
+      - kafka
     networks:
       - microservices_network-adson
 
@@ -31,7 +33,8 @@ services:
     networks:
       - microservices_network-adson
     depends_on:
-      -  order-service-db
+      - order-service-db
+      - kafka
 
   payment-service:
     build:
@@ -45,11 +48,12 @@ services:
     env_file:
       - .env
     environment:
-      - PORT=${ORDER_SERVICE_PORT:-3002}  
+      - PORT=${PAYMENT_SERVICE_PORT:-3002}  
     networks:
       - microservices_network-adson
     depends_on:
-      -  payment-service-db    
+      - payment-service-db    
+      - kafka
 
   notification-service:
     build:
@@ -63,11 +67,12 @@ services:
     env_file:
       - .env
     environment:
-      - PORT=${ORDER_SERVICE_PORT:-3003}  
+      - PORT=${NOTIFICATION_SERVICE_PORT:-3003}  
     networks:
       - microservices_network-adson
     depends_on:
-      -  notification-service-db    
+      - notification-service-db    
+      - kafka
 
   order-service-db:
     image: mongo:5.0
@@ -116,7 +121,7 @@ services:
       - 'PUID=1000'
       - 'PGID=1000'
     ports:
-      - "27017:27017"         
+      - "27019:27017"         
     networks:
       - microservices_network-adson    
 
@@ -141,6 +146,11 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+    healthcheck:
+      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 10s
+      timeout: 10s
+      retries: 5  
     networks:
       - microservices_network-adson
 
