@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./services/order-service:/app  
-      - /app/node_modules      
+      #- /app/node_modules      
     ports:
       - "${ORDER_SERVICE_PORT:-3001}:3001"
     env_file:
@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./services/payment-service:/app  
-      - /app/node_modules      
+      #- /app/node_modules      
     ports:
       - "${PAYMENT_SERVICE_PORT:-3002}:3002"
     env_file:
@@ -61,7 +61,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./services/notification-service:/app  
-      - /app/node_modules      
+      #- /app/node_modules      
     ports:
       - "${NOTIFICATION_SERVICE_PORT:-3003}:3003"
     env_file:
@@ -82,7 +82,7 @@ services:
       - 'order-db-data:/data/db'
     environment:
       - 'MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-dev}'
-      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234@}'
+      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234}'
       - 'MONGO_INITDB_DATABASE=${MONGO_DATABASE:-order-service}'
       - 'PUID=1000'
       - 'PGID=1000'
@@ -99,7 +99,7 @@ services:
       - 'payment-db-data:/data/db'
     environment:
       - 'MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-dev}'
-      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234@}'
+      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234}'
       - 'MONGO_INITDB_DATABASE=${MONGO_DATABASE:-payment-service}'
       - 'PUID=1000'
       - 'PGID=1000'
@@ -116,7 +116,7 @@ services:
       - 'notification-db-data:/data/db'
     environment:
       - 'MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-dev}'
-      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234@}'
+      - 'MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-dev1234}'
       - 'MONGO_INITDB_DATABASE=${MONGO_DATABASE:-notification-service}'
       - 'PUID=1000'
       - 'PGID=1000'
